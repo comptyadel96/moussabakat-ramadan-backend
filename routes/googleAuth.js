@@ -54,7 +54,7 @@ router.get(
   passport.authenticate("google", {
     successRedirect:
       // "http://localhost:5173/Profil",
-      "https://moussabakat-ramadan.netlify.app/Profil",
+      "https://moussabakatramadan.netlify.app/Profil",
   }),
   (req, res) => {
     // console.log(req.user)
@@ -76,7 +76,7 @@ router.get("/login/success", (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout()
   req.session = null
-  res.redirect("https://moussabakat-ramadan.netlify.app")
+  res.redirect("https://moussabakatramadan.netlify.app")
   res.send("logout with success")
 })
 
