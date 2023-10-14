@@ -24,7 +24,7 @@ app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
 app.use(
   cors({
-    origin: "https://moussabakatramadan.netlify.app",
+    origin: "https://moussabakat-ramadan.com",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://moussabakatramadan.netlify.app"
+    "https://moussabakat-ramadan.com"
   )
 
   // Request methods you wish to allow

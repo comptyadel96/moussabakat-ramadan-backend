@@ -53,9 +53,9 @@ router.get(
 router.get(
   "/redirect",
   passport.authenticate("facebook", {
-      successRedirect:
-        //   "http://localhost:5173/Profil",
-      "https://moussabakatramadan.netlify.app/Profil",
+    successRedirect:
+      //   "http://localhost:5173/Profil",
+      "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     // console.log(req.user)
@@ -70,7 +70,7 @@ router.get("/login/success", (req, res) => {
   if (req.user) {
     res.status(200).send(req.user)
   } else {
-    res.status(404).send("no user connected with google account")
+    res.status(404).send("no user connected with facebook account")
   }
 })
 
@@ -78,7 +78,7 @@ router.get("/login/success", (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout()
   req.session = null
-  res.redirect("https://moussabakatramadan.netlify.app")
+  res.redirect("https://moussabakat-ramadan.com/Profil")
   res.send("logout with success")
 })
 
