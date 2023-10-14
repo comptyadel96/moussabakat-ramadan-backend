@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session")
 const passport = require("passport")
 const cors = require("cors")
 const auth = require("./routes/googleAuth")
+const fbAuth = require("./routes/facebookAuth")
 const user = require("./routes/user")
 const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
@@ -54,6 +55,7 @@ app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
 
 app.use("/api/auth/google", auth) // mount the google auth routes
+app.use("/api/auth/facebook", fbAuth)
 app.use("/api/user", user)
 
 app.listen(port, () => {
