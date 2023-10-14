@@ -1,0 +1,42 @@
+Arguments: 
+  /opt/homebrew/Cellar/node/20.1.0/bin/node /opt/homebrew/Cellar/yarn/1.22.19/libexec/bin/yarn.js add cookie-session cors dotenv express mongoose passport passport-google-oauth20
+
+PATH: 
+  /Users/admin/.bun/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/admin/.bun/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/admin/Library/Android/sdk/emulator:/Users/admin/Library/Android/sdk/platform-tools:/Users/admin/Library/Android/sdk/emulator:/Users/admin/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.1.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error [ERR_SOCKET_CONNECTION_TIMEOUT]: Socket connection timeout
+      at new NodeError (node:internal/errors:399:5)
+      at internalConnectMultiple (node:net:1099:20)
+      at Timeout.internalConnectMultipleTimeout (node:net:1638:3)
+      at listOnTimeout (node:internal/timers:575:11)
+      at process.processTimers (node:internal/timers:514:7)
+
+npm manifest: 
+  {
+    "name": "moussabakat-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
