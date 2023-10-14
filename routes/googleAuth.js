@@ -73,11 +73,11 @@ router.get("/login/success", (req, res) => {
 })
 
 // logout user from google strategy
-router.get("/logout", (req, res) => {
+router.get("/logout", async(req, res) => {
   req.logout()
   req.session = null
   res.redirect("https://moussabakat-ramadan.com/Profil")
-  res.send("logout with success")
+  // res.send("logout with success")
 })
 
 module.exports = router
