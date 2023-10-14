@@ -19,7 +19,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_ID_CLIENT,
       clientSecret: process.env.FACEBOOK_ID_SECRET,
-      callbackURL: "http://localhost:3000/api/auth/facebook/redirect",
+      callbackURL:
+        "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/redirect",
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
@@ -33,7 +34,7 @@ passport.use(
           userId: profile.id,
           nom: profile.displayName,
           email: profile.emails[0].value,
-          authProvider: "google",
+          authProvider: "facebook",
           profilPicture: profile.photos[0].value,
         })
         cb(null, newUser)
@@ -52,8 +53,9 @@ router.get(
 router.get(
   "/redirect",
   passport.authenticate("facebook", {
-    successRedirect: "http://localhost:5173/Profil",
-    //   "https://luminous-kulfi-f6211b.netlify.app/Profil",
+      successRedirect:
+        //   "http://localhost:5173/Profil",
+      "https://moussabakat-ramadan.netlify.app/Profil",
   }),
   (req, res) => {
     // console.log(req.user)
@@ -76,7 +78,7 @@ router.get("/login/success", (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout()
   req.session = null
-  res.redirect("https://luminous-kulfi-f6211b.netlify.app")
+  res.redirect("https://moussabakat-ramadan.netlify.app")
   res.send("logout with success")
 })
 
