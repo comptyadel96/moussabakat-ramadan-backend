@@ -28,7 +28,7 @@ app.use(
   cors({
     origin:
       // "http://localhost:5173",
-    "https://moussabakat-ramadan.com",
+      ["https://moussabakat-ramadan.com", "https://moussabakat-ramadan.com/Profil"],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://moussabakat-ramadan.com"
+    ["https://moussabakat-ramadan.com/Profil"]
     // "http://localhost:5173"
   )
 
