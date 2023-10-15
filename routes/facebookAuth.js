@@ -31,13 +31,13 @@ passport.use(
         return cb(null, currentUser)
       } else {
         console.log(profile)
-        // const newUser = await userModel.create({
-        //   userId: profile.id,
-        //   nom: profile.displayName,
-        //   email: profile.emails[0].value,
-        //   authProvider: "facebook",
-        //   profilPicture: profile.photos[0].value,
-        // })
+        const newUser = await userModel.create({
+          userId: profile.id,
+          nom: profile.displayName,
+          // email: profile.emails[0].value,
+          // authProvider: "facebook",
+          // profilPicture: profile.photos[0].value,
+        })
         cb(null, newUser)
       }
     }
