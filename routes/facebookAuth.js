@@ -46,7 +46,7 @@ passport.use(
 router.get(
   "/",
   passport.authenticate("facebook", {
-    scope: ["profile"],
+    scope: ["public_profile","email"],
   })
 )
 
