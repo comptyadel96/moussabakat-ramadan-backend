@@ -59,26 +59,26 @@ router.post("/register", async (req, res) => {
       userId,
       password: hashedPassword,
     })
-    res.redirect("http://localhost:5173/Profil")
+    res.redirect("https://moussabakat-ramadan.com/Profil")
   })
 })
 
 router.post("/login", async (req, res) => {
   passport.authenticate("local", {
-    successRedirect: "http://localhost:5173/Profil",
+    successRedirect: "https://moussabakat-ramadan.com/Profil",
     failureRedirect: "/login",
     failureFlash: true,
   }),
     (req, res) => {
       // Redirection après connexion réussie
-      res.redirect("http://localhost:5173/Profil")
+      res.redirect("https://moussabakat-ramadan.com/Profil")
     }
 })
 
 router.get("/logout", async (req, res) => {
   req.logOut()
   req.session = null
-  res.redirect("http://localhost:5173/Profil")
+  res.redirect("https://moussabakat-ramadan.com/Profil")
 })
 
 module.exports = router
