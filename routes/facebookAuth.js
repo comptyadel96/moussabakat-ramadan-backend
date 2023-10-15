@@ -79,7 +79,7 @@ router.get("/logout", (req, res) => {
   req.logout()
   req.session = null
   res.redirect("https://moussabakat-ramadan.com/Profil")
-  res.send("logout with success")
+//   res.send("logout with success")
 })
 
 module.exports = router
