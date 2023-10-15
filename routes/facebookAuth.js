@@ -21,6 +21,7 @@ passport.use(
       clientSecret: process.env.FACEBOOK_ID_SECRET,
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/redirect",
+      profileFields: ["id", "displayName", "photos", "email"],
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
@@ -46,7 +47,7 @@ passport.use(
 router.get(
   "/",
   passport.authenticate("facebook", {
-    scope: ["public_profile","email"],
+    scope: ["public_profile", "email"],
   })
 )
 
@@ -79,7 +80,7 @@ router.get("/logout", (req, res) => {
   req.logout()
   req.session = null
   res.redirect("https://moussabakat-ramadan.com/Profil")
-//   res.send("logout with success")
+  //   res.send("logout with success")
 })
 
 module.exports = router
