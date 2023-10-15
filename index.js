@@ -7,6 +7,7 @@ const passport = require("passport")
 const cors = require("cors")
 const auth = require("./routes/googleAuth")
 const fbAuth = require("./routes/facebookAuth")
+const localAuth = require("./routes/localAuth")
 const user = require("./routes/user")
 const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
@@ -22,9 +23,12 @@ app.use(
 )
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
+
 app.use(
   cors({
-    origin: "https://moussabakat-ramadan.com",
+    origin:
+      // "http://localhost:5173",
+    "https://moussabakat-ramadan.com",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -34,6 +38,7 @@ app.use(function (req, res, next) {
   res.setHeader(
     "Access-Control-Allow-Origin",
     "https://moussabakat-ramadan.com"
+    // "http://localhost:5173"
   )
 
   // Request methods you wish to allow
@@ -58,7 +63,8 @@ app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
 
 app.use("/api/auth/google", auth) // mount the google auth routes
-app.use("/api/auth/facebook", fbAuth)
+app.use("/api/auth/facebook", fbAuth) // fb o auth
+app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
 
 app.listen(port, () => {

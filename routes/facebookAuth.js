@@ -54,12 +54,10 @@ router.get(
 router.get(
   "/redirect",
   passport.authenticate("facebook", {
-    successRedirect:
-      //   "http://localhost:5173/Profil",
-      "https://moussabakat-ramadan.com/Profil",
+    successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
-    // console.log(req.user)
+    console.log(req.user)
     res.send(req.user)
     // console.log(req.user)
   }
