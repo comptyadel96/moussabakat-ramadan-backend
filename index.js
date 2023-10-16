@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader(
     "Access-Control-Allow-Origin",
-    ["https://moussabakat-ramadan.com/Profil","https://moussabakat-ramadan.com"]
+    "https://moussabakat-ramadan.com"
     // "http://localhost:5173"
   )
 
