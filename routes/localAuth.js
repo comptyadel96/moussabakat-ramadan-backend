@@ -34,23 +34,8 @@ passport.use(
 )
 
 router.post("/register", async (req, res) => {
-  const {
-    nom,
-    adresse,
-    numTel,
-    email,
-    age,
-    hasCompletedProfile,
-    authProvider,
-    userId,
-    password,
-  } = req.body
-  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-    if (err) {
-      console.error("Erreur lors du hashage du mot de passe :", err)
-      return res.redirect("https://moussabakat-ramadan.com/Profil")
-    }
-    userModel.create({
+  try {
+    const {
       nom,
       adresse,
       numTel,
@@ -58,23 +43,59 @@ router.post("/register", async (req, res) => {
       age,
       hasCompletedProfile,
       authProvider,
-      userId,
-      password: hashedPassword,
+      password,
+    } = req.body
+    bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
+      if (err) {
+        console.error("Erreur lors du hashage du mot de passe :", err)
+        return res.redirect("https://moussabakat-ramadan.com/Profil")
+      }
+      await userModel.create({
+        nom,
+        adresse,
+        numTel,
+        email,
+        age,
+        hasCompletedProfile,
+        authProvider,
+        password: hashedPassword,
+      })
+      res.redirect("https://moussabakat-ramadan.com/Profil")
     })
-    res.redirect("https://moussabakat-ramadan.com/Profil")
-  })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
-router.post("/login", async (req, res) => {
-  passport.authenticate("local", {
-    successRedirect: "https://moussabakat-ramadan.com/Profil",
-    // failureRedirect: "/login",
-    // failureFlash: true,
-  }),
-    (req, res) => {
-      // Redirection après connexion réussie
-      res.redirect("https://moussabakat-ramadan.com/Profil")
+// router.post("/login", async (req, res) => {
+//   passport.authenticate("local", {
+//     successRedirect: "https://moussabakat-ramadan.com/Profil",
+//     // failureRedirect: "/login",
+//     // failureFlash: true,
+//   }),
+//     (req, res) => {
+//       // Redirection après connexion réussie
+//       res.redirect("https://moussabakat-ramadan.com/Profil")
+//     }
+// })
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err)
     }
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Incorrect username or password." })
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err)
+      }
+      return res.redirect("https://moussabakat-ramadan.com/Profil")
+    })
+  })(req, res, next)
 })
 
 router.get("/logout", async (req, res) => {

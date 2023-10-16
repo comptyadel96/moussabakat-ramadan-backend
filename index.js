@@ -32,6 +32,7 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 )
+
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
 //   res.setHeader(
