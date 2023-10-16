@@ -62,6 +62,7 @@ router.post("/register", async (req, res) => {
       })
       res.redirect("https://moussabakat-ramadan.com/Profil")
     })
+    res.redirect("https://moussabakat-ramadan.com/Profil")
   } catch (error) {
     console.log(error)
   }
