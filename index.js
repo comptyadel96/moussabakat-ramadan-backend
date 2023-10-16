@@ -26,16 +26,18 @@ app.use(passport.session()) // use the cookie to store the session
 
 app.use(
   cors({
-    origin: "*",
-    // "http://localhost:5173",
-    // ["https://moussabakat-ramadan.com", "https://moussabakat-ramadan.com/Profil"],
+    origin: "https://moussabakat-ramadan.com",
+
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 )
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://moussabakat-ramadan.com"
+  )
 
   // Request methods you wish to allow
   res.setHeader(
