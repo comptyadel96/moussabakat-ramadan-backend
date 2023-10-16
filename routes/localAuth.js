@@ -48,7 +48,7 @@ router.post("/register", async (req, res) => {
   bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
     if (err) {
       console.error("Erreur lors du hashage du mot de passe :", err)
-      return res.redirect("http://localhost:5173/Profil")
+      return res.redirect("https://moussabakat-ramadan.com/Profil")
     }
     userModel.create({
       nom,
