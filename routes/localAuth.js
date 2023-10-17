@@ -5,17 +5,15 @@ const passport = require("passport")
 const router = require("express").Router()
 const LocalStrategy = require("passport-local").Strategy
 
-// passport.serializeUser(function (user, cb) {
-//   process.nextTick(function () {
-//     cb(null, { id: user.id, username: user.email })
-//   })
-// })
-
-// passport.deserializeUser(function (user, cb) {
-//   process.nextTick(function () {
-//     return cb(null, user)
-//   })
-// })
+// serialize(from json data to a serie of strings) and deserialize user(from a serie of strings to a json data)
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
+passport.deserializeUser((id, done) => {
+  userModel.findById(id).then((user) => {
+    done(null, user)
+  })
+})
 
 passport.use(
   new LocalStrategy(
