@@ -19,9 +19,13 @@ passport.deserializeUser(function (user, cb) {
 
 passport.use(
   new LocalStrategy(
-    { usernameField: "email", passReqToCallback: true },
+    {
+      usernameField: "email",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
     async (req, username, password, done) => {
-      const currUser = await userModel.findOne({ username: username })
+      const currUser = await userModel.findOne({ email: username })
 
       if (!currUser) {
         return done(null, false, { message: "Incorrect username." })
@@ -73,24 +77,11 @@ router.post("/register", async (req, res) => {
         password: hashedPassword,
       })
       res.status(200).send(newUser)
-      // res.redirect("https://moussabakat-ramadan.com/Profil")
     })
   } catch (error) {
     console.log(error)
   }
 })
-
-// router.post("/login", async (req, res) => {
-//   passport.authenticate("local", {
-//     successRedirect: "https://moussabakat-ramadan.com/Profil",
-//     // failureRedirect: "/login",
-//     // failureFlash: true,
-//   }),
-//     (req, res) => {
-//       // Redirection après connexion réussie
-//       res.redirect("https://moussabakat-ramadan.com/Profil")
-//     }
-// })
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -100,7 +91,7 @@ router.post("/login", (req, res, next) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Incorrect username or password." })
+        .json({ message: "Incorrect username or password /login" })
     }
     req.logIn(user, (err) => {
       if (err) {
