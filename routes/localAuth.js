@@ -3,7 +3,19 @@ const saltRounds = 10
 const { userModel } = require("../models/user")
 const passport = require("passport")
 const router = require("express").Router()
-const LocalStrategy = require("passport-local").Strategy
+const LocalStrategy = require("passport-local").Strategy 
+
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    cb(null, { id: user.id, username: user.username })
+  })
+})
+
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user)
+  })
+})
 
 passport.use(
   new LocalStrategy(
@@ -25,7 +37,9 @@ passport.use(
           if (isMatch) {
             return done(null, user)
           } else {
-            return done(null, false, { message: "Incorrect password." })
+            return done(null, false, {
+              message: "Nom d'utilisateur ou mot de passe incorrecte",
+            })
           }
         })
       })
