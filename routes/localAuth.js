@@ -30,19 +30,18 @@ passport.use(
       }
 
       // Vérifier le mot de passe
-      bcrypt.compare(password, user.password, (err, isMatch) => {
+      bcrypt.compare(password, currUser.password, (err, isMatch) => {
         if (err) {
           return done(err)
         }
         if (isMatch) {
-          return done(null, user)
+          return done(null, currUser)
         } else {
           return done(null, false, {
             message: "Nom d'utilisateur ou mot de passe incorrecte",
           })
         }
       })
-      return currUser
     }
   )
 )
