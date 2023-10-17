@@ -48,9 +48,9 @@ router.post("/register", async (req, res) => {
     bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
       if (err) {
         console.error("Erreur lors du hashage du mot de passe :", err)
-        return res.redirect("https://moussabakat-ramadan.com/Profil")
+        // return res.redirect("https://moussabakat-ramadan.com/Profil")
       }
-      await userModel.create({
+      const newUser = await userModel.create({
         nom,
         adresse,
         numTel,
@@ -60,9 +60,9 @@ router.post("/register", async (req, res) => {
         authProvider,
         password: hashedPassword,
       })
-      res.redirect("https://moussabakat-ramadan.com/Profil")
+      res.status(200).send(newUser)
+      // res.redirect("https://moussabakat-ramadan.com/Profil")
     })
-    res.redirect("https://moussabakat-ramadan.com/Profil")
   } catch (error) {
     console.log(error)
   }
@@ -94,7 +94,8 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return next(err)
       }
-      return res.redirect("https://moussabakat-ramadan.com/Profil")
+      // return res.redirect("https://moussabakat-ramadan.com/Profil")
+      res.status(200).send(req.user)
     })
   })(req, res, next)
 })
