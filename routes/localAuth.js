@@ -3,7 +3,7 @@ const saltRounds = 10
 const { userModel } = require("../models/user")
 const passport = require("passport")
 const router = require("express").Router()
-const LocalStrategy = require("passport-local").Strategy 
+const LocalStrategy = require("passport-local").Strategy
 
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
@@ -20,29 +20,27 @@ passport.deserializeUser(function (user, cb) {
 passport.use(
   new LocalStrategy(
     { usernameField: "email", passReqToCallback: true },
-    (req, username, password, done) => {
-      userModel.findOne({ username: username }, (err, user) => {
+    async (req, username, password, done) => {
+      const currUser = await userModel.findOne({ username: username })
+
+      if (!currUser) {
+        return done(null, false, { message: "Incorrect username." })
+      }
+
+      // Vérifier le mot de passe
+      bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) {
           return done(err)
         }
-        if (!user) {
-          return done(null, false, { message: "Incorrect username." })
+        if (isMatch) {
+          return done(null, user)
+        } else {
+          return done(null, false, {
+            message: "Nom d'utilisateur ou mot de passe incorrecte",
+          })
         }
-
-        // Vérifier le mot de passe
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-          if (err) {
-            return done(err)
-          }
-          if (isMatch) {
-            return done(null, user)
-          } else {
-            return done(null, false, {
-              message: "Nom d'utilisateur ou mot de passe incorrecte",
-            })
-          }
-        })
       })
+      return currUser
     }
   )
 )
