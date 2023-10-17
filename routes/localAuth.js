@@ -94,8 +94,7 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return next(err)
       }
-      // return res.redirect("https://moussabakat-ramadan.com/Profil")
-      res.status(200).send(req.user)
+      res.status(200).send(user)
     })
   })(req, res, next)
 })
