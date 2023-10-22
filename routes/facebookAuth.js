@@ -21,7 +21,8 @@ passport.use(
       clientSecret: process.env.FACEBOOK_ID_SECRET,
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/redirect",
-      profileFields: ["id", "displayName", "photos", "emails"],
+      profileFields: ["id", "displayName", "photos", "email"],
+      passReqToCallback: true,
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
@@ -36,8 +37,7 @@ passport.use(
           nom: profile.displayName,
           email: "adoulation2007@hotmail.com",
           authProvider: "facebook",
-          profilPicture:
-            "https://res.cloudinary.com/shirty/image/upload/v1697977748/people_jk7reh.png",
+          profilPicture: profile.photos[0].value,
         })
         cb(null, newUser)
       }
@@ -48,7 +48,8 @@ passport.use(
 router.get(
   "/",
   passport.authenticate("facebook", {
-    scope: ["email", "public_profil"],
+    scope: ["email", "public_profile"],
+    successRedirect: "https://moussabakat-ramadan.com/Profil",
   })
 )
 
