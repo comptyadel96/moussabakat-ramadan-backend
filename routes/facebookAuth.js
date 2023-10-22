@@ -21,8 +21,8 @@ passport.use(
       clientSecret: process.env.FACEBOOK_ID_SECRET,
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/redirect",
-      profileFields: ["id", "displayName", "photos", "email"],
-      passReqToCallback: true,
+      // profileFields: ["id", "displayName", "photos", "email"],
+      // passReqToCallback: true,
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
