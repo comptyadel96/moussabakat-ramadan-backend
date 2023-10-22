@@ -34,9 +34,10 @@ passport.use(
         const newUser = await userModel.create({
           userId: profile.id,
           nom: profile.displayName,
-          email: profile.emails[0].value,
+          email: "adoulation2007@hotmail.com",
           authProvider: "facebook",
-          profilPicture: profile.photos[0].value,
+          profilPicture:
+            "https://res.cloudinary.com/shirty/image/upload/v1697977748/people_jk7reh.png",
         })
         cb(null, newUser)
       }
@@ -47,7 +48,7 @@ passport.use(
 router.get(
   "/",
   passport.authenticate("facebook", {
-    scope: ["email"],
+    scope: ["email", "public_profil"],
   })
 )
 
