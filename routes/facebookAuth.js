@@ -53,13 +53,13 @@ router.get(
 )
 
 router.get(
-  "/redirect",
+  "/callback",
   passport.authenticate("facebook", {
     // successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
-    console.log(req.user)
-    res.send(req.user)
+    console.log(req.isAuthenticated())
+    res.status(200).send(req.user)
     // console.log(req.user)
   }
 )

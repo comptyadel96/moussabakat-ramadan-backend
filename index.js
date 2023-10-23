@@ -33,8 +33,6 @@ app.use(
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
 
-
-
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
 //   res.setHeader(
@@ -67,6 +65,13 @@ app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
 app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
+app.use("/api/isAuthenticated", async (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.status(200).send("utilisateur connecter")
+  } else {
+    return res.status(400).send("utilisateur non connecter")
+  }
+})
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`)

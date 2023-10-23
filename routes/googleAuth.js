@@ -50,7 +50,7 @@ router.get(
 )
 // handling the callback after google has authenticated the user
 router.get(
-  "/redirect",
+  "/callback",
   passport.authenticate("google", {
     // successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
