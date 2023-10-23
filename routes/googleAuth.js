@@ -52,9 +52,7 @@ router.get(
 router.get(
   "/redirect",
   passport.authenticate("google", {
-    successRedirect:
-      // "http://localhost:5173/Profil",
-      "https://moussabakat-ramadan.com/Profil",
+    // successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     // console.log(req.user)
@@ -73,7 +71,7 @@ router.get("/login/success", (req, res) => {
 })
 
 // logout user from google strategy
-router.get("/logout", async(req, res) => {
+router.get("/logout", async (req, res) => {
   req.logout()
   req.session = null
   res.redirect("https://moussabakat-ramadan.com/Profil")

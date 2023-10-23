@@ -22,7 +22,6 @@ passport.use(
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/redirect",
       profileFields: ["id", "displayName", "photos", "email"],
-      
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
@@ -50,7 +49,6 @@ router.get(
   passport.authenticate("facebook", {
     scope: ["email", "public_profile"],
     successRedirect: "https://moussabakat-ramadan.com/Profil",
-    display:"popup"
   })
 )
 
