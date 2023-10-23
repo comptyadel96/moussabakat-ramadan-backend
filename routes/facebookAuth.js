@@ -50,6 +50,7 @@ router.get(
   passport.authenticate("facebook", {
     scope: ["email", "public_profile"],
     successRedirect: "https://moussabakat-ramadan.com/Profil",
+    display:"popup"
   })
 )
 
