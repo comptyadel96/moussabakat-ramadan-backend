@@ -48,14 +48,14 @@ router.get(
   "/",
   passport.authenticate("facebook", {
     scope: ["email", "public_profile"],
-    successRedirect: "https://moussabakat-ramadan.com/Profil",
+    // successRedirect: "https://moussabakat-ramadan.com/Profil",
   })
 )
 
 router.get(
   "/redirect",
   passport.authenticate("facebook", {
-    successRedirect: "https://moussabakat-ramadan.com/Profil",
+    // successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     console.log(req.user)
