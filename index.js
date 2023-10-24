@@ -16,7 +16,6 @@ connectDb()
 app.use(
   cors({
     origin: "https://moussabakat-ramadan.com",
-
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -28,6 +27,7 @@ app.use(
     keys: [process.env.COOKIE_KEY], // key to encrypt the cookie
     secure: true,
     httpOnly: false,
+    sameSite: "none",
   })
 )
 app.use(passport.initialize()) // initialize passport
