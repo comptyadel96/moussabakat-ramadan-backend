@@ -20,7 +20,7 @@ passport.use(
       clientID: process.env.FACEBOOK_ID_CLIENT,
       clientSecret: process.env.FACEBOOK_ID_SECRET,
       callbackURL:
-        "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/redirect",
+        "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/callback",
       profileFields: ["id", "displayName", "photos", "email"],
     },
     async (accessToken, refreshToken, profile, cb) => {
@@ -48,14 +48,14 @@ router.get(
   "/",
   passport.authenticate("facebook", {
     scope: ["email", "public_profile"],
-    // successRedirect: "https://moussabakat-ramadan.com/Profil",
+    successRedirect: "https://moussabakat-ramadan.com/Profil",
   })
 )
 
 router.get(
   "/callback",
   passport.authenticate("facebook", {
-    // successRedirect: "https://moussabakat-ramadan.com/Profil",
+    successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     console.log(req.isAuthenticated())

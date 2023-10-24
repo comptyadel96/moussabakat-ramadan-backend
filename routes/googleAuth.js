@@ -55,14 +55,11 @@ router.get(
     successRedirect: "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
-    // console.log(req.user)
     res.send(req.user)
-    // console.log(req.user)
   }
 )
 //  route for successful logins
 router.get("/login/success", (req, res) => {
-  // console.log(req.user)
   if (req.user) {
     res.status(200).send(req.user)
   } else {

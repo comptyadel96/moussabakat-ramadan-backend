@@ -13,13 +13,7 @@ const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
 connectDb()
 
-app.use(
-  cors({
-    origin: "https://moussabakat-ramadan.com",
-    credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  })
-)
+
 // use cookie session to store the session in the browser
 app.use(
   cookieSession({
@@ -32,6 +26,15 @@ app.use(
 )
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
+
+// set the cors
+app.use(
+  cors({
+    origin: "https://moussabakat-ramadan.com",
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+)
 
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
