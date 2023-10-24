@@ -13,7 +13,8 @@ const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
 connectDb()
 
-
+app.use(passport.initialize()) // initialize passport
+app.use(passport.session()) // use the cookie to store the session
 // use cookie session to store the session in the browser
 app.use(
   cookieSession({
@@ -24,9 +25,6 @@ app.use(
     sameSite: "none",
   })
 )
-app.use(passport.initialize()) // initialize passport
-app.use(passport.session()) // use the cookie to store the session
-
 // set the cors
 app.use(
   cors({

@@ -21,6 +21,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/google/callback",
+      scope: ["email", "profile"],
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
