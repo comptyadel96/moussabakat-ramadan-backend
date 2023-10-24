@@ -35,7 +35,7 @@ passport.use(
         const newUser = await userModel.create({
           userId: profile.id,
           nom: profile.displayName,
-          email: "adoulation2007@hotmail.com",
+          email: profile.emails[0],
           authProvider: "facebook",
           profilPicture: profile.photos[0].value,
         })

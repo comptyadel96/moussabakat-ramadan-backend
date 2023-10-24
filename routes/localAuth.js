@@ -26,7 +26,9 @@ passport.use(
       const currUser = await userModel.findOne({ email: username })
 
       if (!currUser) {
-        return done(null, false, { message: "Incorrect username." })
+        return done(null, false, {
+          message: "Aucun utilisateur enregistrer avec cet email",
+        })
       }
 
       // Vérifier le mot de passe
@@ -88,7 +90,7 @@ router.post("/login", (req, res, next) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Incorrect username or password /login" })
+        .json({ message: "Nom d'utilisateur ou mot de passe incorrecte" })
     }
     req.logIn(user, (err) => {
       if (err) {
