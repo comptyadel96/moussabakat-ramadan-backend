@@ -22,6 +22,7 @@ passport.use(
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/facebook/callback",
       profileFields: ["id", "displayName", "photos", "email"],
+      scope: ["email", "public_profile"],
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(profile)
