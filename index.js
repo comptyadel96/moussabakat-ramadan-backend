@@ -11,6 +11,7 @@ const localAuth = require("./routes/localAuth")
 const user = require("./routes/user")
 const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
+const checkCookies = require("./middlewares/checkCookies")
 connectDb()
 // use cookie session to store the session in the browser
 app.use(
@@ -66,6 +67,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
+app.use(checkCookies())
 
 app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
