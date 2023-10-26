@@ -20,9 +20,9 @@ passport.use(
     {
       usernameField: "email",
       passwordField: "password",
-      passReqToCallback: true,
+      // passReqToCallback: true,
     },
-    async (req, username, password, done) => {
+    async (username, password, done) => {
       const currUser = await userModel.findOne({ email: username })
 
       if (!currUser) {
