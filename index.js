@@ -68,7 +68,7 @@ app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
 app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
-    return res.status(200).send("utilisateur connecter")
+    return res.status(200).send(req.user)
   } else {
     return res.status(404).send("utilisateur non connecter")
   }
