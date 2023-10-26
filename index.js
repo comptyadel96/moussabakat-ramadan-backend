@@ -17,11 +17,16 @@ app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in miliseconds
     keys: [process.env.COOKIE_KEY], // key to encrypt the cookie
-    // secure: true,
+    secure: true,
     httpOnly: false,
-    // sameSite: "none",
+    sameSite: "none",
   })
 )
+// 3.75.158.163
+// 3.125.183.140
+// 35.157.117.28
+app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
+
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
 
