@@ -19,7 +19,7 @@ app.use(
     keys: [process.env.COOKIE_KEY], // key to encrypt the cookie
     secure: true,
     httpOnly: false,
-    sameSite: "none",
+    // sameSite: "none",
   })
 )
 app.use(passport.initialize()) // initialize passport
@@ -28,7 +28,7 @@ app.use(passport.session()) // use the cookie to store the session
 // set the cors
 app.use(
   cors({
-    origin: ["https://moussabakat-ramadan.com", "http://localhost:5173"],
+    origin: "https://moussabakat-ramadan.com",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -70,7 +70,7 @@ app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
     return res.status(200).send("utilisateur connecter")
   } else {
-    return res.status(400).send("utilisateur non connecter")
+    return res.status(404).send("utilisateur non connecter")
   }
 })
 
