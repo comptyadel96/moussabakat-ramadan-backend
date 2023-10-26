@@ -8,7 +8,7 @@ module.exports = function checkCookies(req, res, next) {
     res
       .status(403)
       .send(
-        "Veuillez activer les cookies pour utiliser ce site, allez dans les parametres de votre navigateur et autoriser notre site à utiliser les cookies "
+        "Veuillez activer les cookies pour utiliser l'authentification de ce site, allez dans les parametres de votre navigateur et autoriser notre site à utiliser les cookies "
       )
   }
 }

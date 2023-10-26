@@ -30,7 +30,7 @@ app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
-
+app.use(checkCookies)
 // set the cors
 app.use(
   cors({
@@ -67,7 +67,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
-app.use(checkCookies)
+
 
 app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
