@@ -96,7 +96,10 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return next(err)
       }
-      res.status(200).send(user)
+      res
+        .status(200)
+        .send(user)
+        .redirect("https://moussabakat-ramadan.com/Profil")
     })
   })(req, res, next)
 })
@@ -104,7 +107,7 @@ router.post("/login", (req, res, next) => {
 router.get("/logout", async (req, res) => {
   req.logOut()
   req.session = null
-  res.redirect("https://moussabakat-ramadan.com/Profil")
+  res.redirect("https://moussabakat-ramadan.com/Login")
 })
 
 module.exports = router
