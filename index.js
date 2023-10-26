@@ -17,7 +17,7 @@ app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in miliseconds
     keys: [process.env.COOKIE_KEY], // key to encrypt the cookie
-    secure: true,
+    // secure: true,
     httpOnly: false,
     // sameSite: "none",
   })
