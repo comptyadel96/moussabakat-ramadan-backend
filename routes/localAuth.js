@@ -98,8 +98,8 @@ router.post("/login", (req, res, next) => {
       }
       res
         .status(200)
-        // .send(user)
-        .redirect("https://moussabakat-ramadan.com/Profil")
+        .send(user)
+        // .redirect("https://moussabakat-ramadan.com/Profil")
     })
   })(req, res, next)
 })
