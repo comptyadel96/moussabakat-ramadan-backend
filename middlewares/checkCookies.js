@@ -1,6 +1,6 @@
-function checkCookies(req, res, next) {
-    if (req.session) {
-      console.log(req.session)
+module.exports = function checkCookies(req, res, next) {
+  if (req.session) {
+    console.log(req.session)
     // Les cookies sont activés, continuez vers la route suivante
     next()
   } else {
