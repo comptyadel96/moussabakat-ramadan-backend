@@ -67,12 +67,13 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
-app.use(checkCookies)
+app.use(checkCookies())
 
 app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
 app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
+
 app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
     return res.status(200).send(req.user)

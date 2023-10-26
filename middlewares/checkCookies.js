@@ -1,4 +1,4 @@
-function checkCookiesEnabled(req, res, next) {
+function checkCookies(req, res, next) {
     if (req.session) {
       console.log(req.session)
     // Les cookies sont activés, continuez vers la route suivante
