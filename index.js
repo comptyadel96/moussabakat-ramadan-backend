@@ -23,9 +23,6 @@ app.use(
     sameSite: "none",
   })
 )
-// 3.75.158.163
-// 3.125.183.140
-// 35.157.117.28
 app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
 app.use(passport.initialize()) // initialize passport
@@ -34,8 +31,8 @@ app.use(checkCookies)
 // set the cors
 app.use(
   cors({
-    // origin: "https://moussabakat-ramadan.com",
-    origin: "*",
+    origin: "https://moussabakat-ramadan.com",
+    // origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
