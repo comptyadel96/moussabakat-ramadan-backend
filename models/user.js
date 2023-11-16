@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       minLength: [4, "le nom doit avoir plus de 4 caractéres"],
     },
+    prenom: {
+      type: String,
+      maxLength: [100, "le nom ne peut pas dépasser 100 caractéres"],
+      // required: true,
+      minLength: [4, "le prenom doit avoir plus de 4 caractéres"],
+    },
     adresse: {
       type: String,
       maxLength: [300, "l'adresse ne peut pas dépasser 300 caractéres"],
@@ -48,7 +54,6 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     wilaya: String,
-    
   },
 
   { timestamps: true }

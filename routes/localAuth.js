@@ -52,6 +52,7 @@ router.post("/register", async (req, res) => {
   try {
     const {
       nom,
+      prenom,
       adresse,
       numTel,
       email,
@@ -67,6 +68,7 @@ router.post("/register", async (req, res) => {
       }
       const newUser = await userModel.create({
         nom,
+        prenom,
         adresse,
         numTel,
         email,
@@ -96,10 +98,8 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return next(err)
       }
-      res
-        .status(200)
-        .send(user)
-        // .redirect("https://moussabakat-ramadan.com/Profil")
+      res.status(200).send(user)
+      // .redirect("https://moussabakat-ramadan.com/Profil")
     })
   })(req, res, next)
 })
