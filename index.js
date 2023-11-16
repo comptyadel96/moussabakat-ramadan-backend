@@ -12,6 +12,12 @@ const user = require("./routes/user")
 const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
 const checkCookies = require("./middlewares/checkCookies")
+
+const http = require("http")
+const server = http.createServer(app)
+const { Server } = require("socket.io")
+const cron = require("node-cron")
+
 connectDb()
 // use cookie session to store the session in the browser
 app.use(
@@ -23,7 +29,7 @@ app.use(
     sameSite: "none",
   })
 )
-app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
+// app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
@@ -31,8 +37,8 @@ app.use(checkCookies)
 // set the cors
 app.use(
   cors({
-    origin: "https://moussabakat-ramadan.com",
-    // origin: "*",
+    // origin: "https://moussabakat-ramadan.com",
+    origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -70,6 +76,7 @@ app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
 app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
+app.use("/", (req, res) => res.send("hello world"))
 
 app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
@@ -79,6 +86,53 @@ app.use("/api/isAuthenticated", async (req, res) => {
   }
 })
 
-app.listen(port, () => {
+// socket config
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    // credentials: true,
+    // allowedHeaders: true,
+  },
+})
+
+// socket io config
+io.on("connection", (socket) => {
+  console.log("a user connected " + socket.id)
+
+  socket.on("join", (userId) => {
+    socket.join(userId)
+    console.log("user join the room " + userId)
+    userConnections[userId] = socket.id
+  })
+
+  // message
+  socket.on("message", (data) => {
+    console.log(data)
+    const { recipientId, message } = data
+    io.to(recipientId).emit("receive:message", { sender: socket.id, message })
+  })
+  // io.emit("message", "hello from backend")
+  socket.on("disconnect", () => {
+    console.log("user disconnected")
+    // Supprimer l'entrée de connexion de l'utilisateur lorsqu'il se déconnecte
+    // for (const userId in userConnections) {
+    //   if (userConnections[userId] === socket.id) {
+    //     delete userConnections[userId]
+    //     break
+    //   }
+    // }
+  })
+})
+
+cron.schedule("32 22 * * *", () => {
+  // Réinitialiser les questions ici
+  io.emit("questionReset", {
+    q: "Question numéro 5 ",
+  })
+  console.log("mis a jour avec succeés ")
+})
+
+server.listen(port, () => {
   console.log(`Listening on port ${port}...`)
 })
+
