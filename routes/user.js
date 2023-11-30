@@ -18,6 +18,7 @@ router.put("/completeProfil", async (req, res) => {
       numTel: numTel,
       age: age,
       hasCompletedProfile: hasCompletedProfile,
+    
     },
     { new: true }
   )
@@ -25,6 +26,11 @@ router.put("/completeProfil", async (req, res) => {
     return res.status(404).send("aucun utilisateur trouver avec cet id")
   }
   return res.status(200).send(currUser)
+})
+
+// modify user score  
+router.put("/submit", async (req, res) => {
+  const {scoreH, scoreT } = req.body
 })
 
 module.exports = router

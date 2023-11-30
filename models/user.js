@@ -54,6 +54,11 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     wilaya: String,
+    scoreH: String,
+    scoreT: String,
+    deviceToken: {
+      type: String,
+    },
   },
 
   { timestamps: true }
