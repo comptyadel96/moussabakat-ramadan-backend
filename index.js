@@ -39,8 +39,8 @@ app.use(checkCookies)
 // set the cors
 app.use(
   cors({
-    // origin: "https://moussabakat-ramadan.com",
-    origin: "*",
+    origin: "https://moussabakat-ramadan.com",
+    // origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
