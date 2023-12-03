@@ -78,11 +78,11 @@ app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
 app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
-app.use("/", (req, res) => res.send("hello world"))
+app.use("/", (req, res) => res.send("hello haroun"))
 
 app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
-    return res.status(200).send(req.user)
+   return  res.status(200).send(req.user)
   } else {
     return res.status(404).send("utilisateur non connecter")
   }
@@ -90,11 +90,11 @@ app.use("/api/isAuthenticated", async (req, res) => {
 
 // socket config
 const io = new Server(server, {
-  cors: {
-    origin: "*",
-    // credentials: true,
-    // allowedHeaders: true,
-  },
+  // cors: {
+  //   origin: "*",
+  //   // credentials: true,
+  //   // allowedHeaders: true,
+  // },
 })
 
 // socket io config
@@ -198,6 +198,12 @@ io.on("connection", (socket) => {
                   id: "read",
                 },
               },
+              {
+                title: "Répondre maintenant",
+                pressAction: {
+                  id: "answer",
+                },
+              },
             ],
           },
         }),
@@ -225,9 +231,15 @@ io.on("connection", (socket) => {
                 channelId: "Nouvelle-question",
                 actions: [
                   {
-                    title: "Marquer comme lu",
+                    title: "Ignorer",
                     pressAction: {
                       id: "read",
+                    },
+                  },
+                  {
+                    title: "Répondre maintenant",
+                    pressAction: {
+                      id: "answer",
                     },
                   },
                 ],
