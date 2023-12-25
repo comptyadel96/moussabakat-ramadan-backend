@@ -82,7 +82,7 @@ app.use("/", (req, res) => res.send("hello haroun"))
 
 app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
-   return  res.status(200).send(req.user)
+    return res.status(200).send(req.user)
   } else {
     return res.status(404).send("utilisateur non connecter")
   }
@@ -134,90 +134,14 @@ io.on("connection", (socket) => {
   }
 
   // send notifications
-  // socket.on("sendNotif", async () => {
-  //   const message = {
-  //     data: {
-  //       notifee: JSON.stringify({
-  //         body: "This message was sent via FCM!",
-  //         android: {
-  //           channelId: "Nouvelle question",
-  //           actions: [
-  //             {
-  //               title: "Mark as Read",
-  //               pressAction: {
-  //                 id: "read",
-  //               },
-  //             },
-  //           ],
-  //         },
-  //       }),
-  //     },
-  //     token:
-  //       "cDVpTN2oQ5SC6W2Nmj_Lq5:APA91bERqYhP29vUcjfesJR7bJOwi4lm71hWXbiCyrcNmtHGVTSq-0ApVP3XkknOIOVjJ4w-wPiCMF5avxI-MOF5w8FeiS7Oxo6T_9anVfZU0ruCdlxVtf_8DS1g-tq7sPIKIWVmbVRD",
-  //   }
 
-  //   console.log("recieved notif from front end")
-  //   let tokens = [
-  //     "cDVpTN2oQ5SC6W2Nmj_Lq5:APA91bERqYhP29vUcjfesJR7bJOwi4lm71hWXbiCyrcNmtHGVTSq-0ApVP3XkknOIOVjJ4w-wPiCMF5avxI-MOF5w8FeiS7Oxo6T_9anVfZU0ruCdlxVtf_8DS1g-tq7sPIKIWVmbVRD",
-  //   ]
-  //   await admin
-  //     .messaging()
-  //     // .send(message)
-  //     .sendEachForMulticast({
-  //       tokens,
-  //       data: {
-  //         notifee: JSON.stringify({
-  //           body: "Nouvelle question du jour",
-  //           android: {
-  //             channelId: "Nouvelle-question",
-  //             actions: [
-  //               {
-  //                 title: "Marquer comme lu",
-  //                 pressAction: {
-  //                   id: "read",
-  //                 },
-  //               },
-  //             ],
-  //           },
-  //         }),
-  //       },
-  //     })
-  //   console.log("notification sent to client....")
-  // })
   socket.on("sendNotif", async () => {
-    const message = {
-      data: {
-        notifee: JSON.stringify({
-          body: "This message was sent via FCM!",
-          android: {
-            channelId: "Nouvelle question",
-            actions: [
-              {
-                title: "Mark as Read",
-                pressAction: {
-                  id: "read",
-                },
-              },
-              {
-                title: "Répondre maintenant",
-                pressAction: {
-                  id: "answer",
-                },
-              },
-            ],
-          },
-        }),
-      },
-    }
-
     console.log("received notif from frontend")
-    let tokens = [
-      "cDVpTN2oQ5SC6W2Nmj_Lq5:APA91bERqYhP29vUcjfesJR7bJOwi4lm71hWXbiCyrcNmtHGVTSq-0ApVP3XkknOIOVjJ4w-wPiCMF5avxI-MOF5w8FeiS7Oxo6T_9anVfZU0ruCdlxVtf_8DS1g-tq7sPIKIWVmbVRD",
-      // ... Ajoutez tous les tokens ici
-    ]
+    let tkns = await tokenModel.find({}, "-_id -__v")
+    const tokenArray = tkns.map((token) => token.token)
 
     // Divisez les tokens en lots de 500 tokens chacun
-    const tokenBatches = chunkArray(tokens, 500)
+    const tokenBatches = chunkArray(tokenArray, 500)
 
     // Utilisez une boucle asynchrone pour envoyer les notifications par lots
     for (const batch of tokenBatches) {
@@ -229,15 +153,17 @@ io.on("connection", (socket) => {
               body: "Nouvelle question du jour",
               android: {
                 channelId: "Nouvelle-question",
+                // color: "#00FFFFFF",
                 actions: [
                   {
-                    title: "Ignorer",
+                    title: '<p style="color: #f44336;"><b>Plus tard</b></p>',
                     pressAction: {
                       id: "read",
                     },
                   },
                   {
-                    title: "Répondre maintenant",
+                    title:
+                      "<p style='color: #0ed15d;'><b>Répondre maintenant</b> &#x2713;</p>",
                     pressAction: {
                       id: "answer",
                     },
@@ -265,17 +191,8 @@ cron.schedule("32 22 * * *", () => {
   console.log("mis a jour avec succeés")
 })
 
-// firebase config
-// const firebaseConfig = {
-//   apiKey: "AIzaSyARv2iHtTqH-7fLJP29essiSBLud6cn9zE",
-//   // authDomain: "VOTRE_AUTH_DOMAIN",
-//   projectId: "moussabaat-ramadan",
-//   // storageBucket: "VOTRE_STORAGE_BUCKET",
-//   messagingSenderId: "1041379994550",
-//   appId: "1:1041379994550:android:66439988d60c9bab582f17",
-// }
-
 const serviceAccount = require("./moussabaat-ramadan-firebase-adminsdk-c7l4b-d60ef5cfda.json")
+const { tokenModel } = require("./models/tokens")
 // initializeApp(firebaseConfig)
 initializeApp({
   credential: admin.credential.cert(serviceAccount),
