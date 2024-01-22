@@ -12,7 +12,7 @@ const user = require("./routes/user")
 const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
 const checkCookies = require("./middlewares/checkCookies")
-
+const questions = require("./utils/questions")
 const http = require("http")
 const server = http.createServer(app)
 const { Server } = require("socket.io")
@@ -74,6 +74,34 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
 
+// Définissez la date de début manuellement
+const startDate = new Date("2024-01-11")
+
+function getDailyQuestion(currentDate) {
+  const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
+  const dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24))
+  const questionIndex = (dayDifference - 1) % questions.length
+  return questions[questionIndex]
+}
+
+// ...
+
+app.get("/api/questiondujour", (req, res) => {
+  try {
+    const currentDate = new Date()
+    const dailyQuestion = getDailyQuestion(currentDate)
+    res.status(200).json(dailyQuestion)
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération de la question du jour :",
+      error
+    )
+    res
+      .status(500)
+      .send("Erreur lors de la récupération de la question du jour")
+  }
+})
+
 app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
 app.use("/api/auth/localAuth", localAuth)
@@ -87,6 +115,8 @@ app.use("/api/isAuthenticated", async (req, res) => {
     return res.status(404).send("utilisateur non connecter")
   }
 })
+
+// question du jour ...etc
 
 // socket config
 const io = new Server(server, {

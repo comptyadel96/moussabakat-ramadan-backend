@@ -29,16 +29,38 @@ router.put("/completeProfil", async (req, res) => {
   return res.status(200).send(currUser)
 })
 
-// modify user score
-router.put("/submit", async (req, res) => {
-  const { scoreH, scoreT } = req.body
+// modify user score hebdomadaire
+router.put("/submitH", async (req, res) => {
+  const { scoreH } = req.body
+  const { _id } = req.query
+  const user = await userModel.findByIdAndUpdate(
+    _id,
+    {
+      scoreH,
+    },
+    { new: true }
+  )
+  res.status(200).send(user)
+})
+
+// modify user score hebdomadaire
+router.put("/submitT", async (req, res) => {
+  const { scoreT } = req.body
+  const { _id } = req.query
+  const user = await userModel.findByIdAndUpdate(
+    _id,
+    {
+      scoreT,
+    },
+    { new: true }
+  )
+  res.status(200).send(user)
 })
 // add current phone token to send push notifs
 router.post("/addToken", async (req, res) => {
   const { token } = req.body
   let tkns = await tokenModel.find({}, "-_id -__v")
   console.log(tkns)
-
 
   try {
     // Vérifiez si le token existe déjà dans la collection
@@ -50,7 +72,6 @@ router.post("/addToken", async (req, res) => {
       res.status(200).json({ message: "Token enregistré avec succès" })
     } else {
       res.status(200).json({ message: "Le token existe déjà" })
-      
     }
   } catch (error) {
     console.error("Erreur lors de l'enregistrement du token :", error)

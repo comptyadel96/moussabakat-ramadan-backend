@@ -9,7 +9,7 @@ const questions = [
     index: 1,
   },
   {
-    question: "question numéro 1 ",
+    question: "question numéro 2 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -18,7 +18,7 @@ const questions = [
     index: 2,
   },
   {
-    question: "question numéro 2 ",
+    question: "question numéro 3 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -27,7 +27,7 @@ const questions = [
     index: 3,
   },
   {
-    question: "question numéro 3 ",
+    question: "question numéro 4 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -36,7 +36,7 @@ const questions = [
     index: 4,
   },
   {
-    question: "question numéro 4 ",
+    question: "question numéro 5 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -45,7 +45,7 @@ const questions = [
     index: 5,
   },
   {
-    question: "question numéro 5 ",
+    question: "question numéro 6 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -54,7 +54,7 @@ const questions = [
     index: 6,
   },
   {
-    question: "question numéro 6 ",
+    question: "question numéro 7 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -63,7 +63,7 @@ const questions = [
     index: 7,
   },
   {
-    question: "question numéro 7 ",
+    question: "question numéro 8 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -72,7 +72,7 @@ const questions = [
     index: 8,
   },
   {
-    question: "question numéro 8 ",
+    question: "question numéro 9 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -81,7 +81,7 @@ const questions = [
     index: 9,
   },
   {
-    question: "question numéro 9 ",
+    question: "question numéro 10 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -90,7 +90,7 @@ const questions = [
     index: 10,
   },
   {
-    question: "question numéro 10 ",
+    question: "question numéro 11 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -99,7 +99,7 @@ const questions = [
     index: 11,
   },
   {
-    question: "question numéro 11 ",
+    question: "question numéro 12 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -108,7 +108,7 @@ const questions = [
     index: 12,
   },
   {
-    question: "question numéro 12 ",
+    question: "question numéro 13 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -117,7 +117,7 @@ const questions = [
     index: 13,
   },
   {
-    question: "question numéro 13 ",
+    question: "question numéro 14 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -126,7 +126,7 @@ const questions = [
     index: 14,
   },
   {
-    question: "question numéro 14 ",
+    question: "question numéro 15 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -135,7 +135,7 @@ const questions = [
     index: 15,
   },
   {
-    question: "question numéro 15 ",
+    question: "question numéro 16 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -144,7 +144,7 @@ const questions = [
     index: 16,
   },
   {
-    question: "question numéro 16 ",
+    question: "question numéro 17 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -153,7 +153,7 @@ const questions = [
     index: 17,
   },
   {
-    question: "question numéro 17 ",
+    question: "question numéro 18 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -162,7 +162,7 @@ const questions = [
     index: 18,
   },
   {
-    question: "question numéro 18 ",
+    question: "question numéro 19 ",
     propositions: [
       { isTrue: true, text: "La bonne réponse" },
       { text: "suggestion 1" },
@@ -233,4 +233,41 @@ const questions = [
     ],
     index: 26,
   },
+  {
+    question: "question numéro 25 ",
+    propositions: [
+      { isTrue: true, text: "La bonne réponse" },
+      { text: "suggestion 1" },
+      { text: "suggestion 2" },
+    ],
+    index: 27,
+  },
+  {
+    question: "question numéro 25 ",
+    propositions: [
+      { isTrue: true, text: "La bonne réponse" },
+      { text: "suggestion 1" },
+      { text: "suggestion 2" },
+    ],
+    index: 28,
+  },
+  {
+    question: "question numéro 25 ",
+    propositions: [
+      { isTrue: true, text: "La bonne réponse" },
+      { text: "suggestion 1" },
+      { text: "suggestion 2" },
+    ],
+    index: 29,
+  },
+  {
+    question: "question numéro 25 ",
+    propositions: [
+      { isTrue: true, text: "La bonne réponse" },
+      { text: "suggestion 1" },
+      { text: "suggestion 2" },
+    ],
+    index: 30,
+  },
 ]
+module.exports = questions
