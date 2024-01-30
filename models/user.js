@@ -30,11 +30,11 @@ const userSchema = new mongoose.Schema(
       minLength: [10, "le nom doit avoir plus de 10 chiffres"],
       // unique: [true, "ce numéro de telephone a déja été utiliser"],
     },
-    age: {
+    dateNaissance: {
       type: String,
-      maxLength: [2, "l'age ne peut pas dépasser 2 chiffres"],
-      //   required: true,
-      minLength: [1, "le nom doit avoir plus de 1 chiffre"],
+    },
+    lieuNaissance: {
+      type: String,
     },
     email: {
       type: String,
@@ -54,6 +54,7 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     wilaya: String,
+    sexe: String,
     scoreH: String,
     scoreT: String,
     deviceToken: {

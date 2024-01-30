@@ -56,10 +56,12 @@ router.post("/register", async (req, res) => {
       adresse,
       numTel,
       email,
-      age,
+      dateNaissance,
+      lieuNaissance,
       hasCompletedProfile,
       authProvider,
       password,
+      sexe,
     } = req.body
     bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
       if (err) {
@@ -72,7 +74,9 @@ router.post("/register", async (req, res) => {
         adresse,
         numTel,
         email,
-        age,
+        dateNaissance,
+        lieuNaissance,
+        sexe,
         hasCompletedProfile,
         authProvider,
         password: hashedPassword,
@@ -99,7 +103,6 @@ router.post("/login", (req, res, next) => {
         return next(err)
       }
       res.status(200).send(user)
-      // .redirect("https://moussabakat-ramadan.com/Profil")
     })
   })(req, res, next)
 })

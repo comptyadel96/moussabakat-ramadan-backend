@@ -3,6 +3,7 @@ const dotenv = require("dotenv").config("./env")
 const app = express()
 const port = process.env.PORT || 3000
 const cookieSession = require("cookie-session")
+const session = require("express-session")
 const passport = require("passport")
 const cors = require("cors")
 const auth = require("./routes/googleAuth")
@@ -22,53 +23,32 @@ var admin = require("firebase-admin")
 
 connectDb()
 // use cookie session to store the session in the browser
+
+// app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
+
+app.set("trust proxy", 1) // trust first proxy
 app.use(
-  cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in miliseconds
-    keys: [process.env.COOKIE_KEY], // key to encrypt the cookie
-    secure: true,
-    httpOnly: false,
-    sameSite: "none",
+  session({
+    secret: process.env.COOKIE_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 30 * 24 * 60 * 60 * 1000 },
   })
 )
-// app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
 app.use(passport.initialize()) // initialize passport
 app.use(passport.session()) // use the cookie to store the session
-app.use(checkCookies)
+// app.use(checkCookies)
 // set the cors
 app.use(
   cors({
-    origin: "https://moussabakat-ramadan.com",
+    // origin: "https://moussabakat-ramadan.com",
+    origin: ["http://localhost:5173"],
     // origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 )
-
-// app.use(function (req, res, next) {
-//   // Website you wish to allow to connect
-//   res.setHeader(
-//     "Access-Control-Allow-Origin",
-//     "https://moussabakat-ramadan.com"
-//   )
-
-//   // Request methods you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//   )
-
-//   // Request headers you wish to allow
-//   res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type")
-
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.setHeader("Access-Control-Allow-Credentials", true)
-
-//   // Pass to next layer of middleware
-//   next()
-// })
 // middleware to parse the body of the request to json format and store it in req.body object
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "15mb" }))
@@ -84,8 +64,24 @@ function getDailyQuestion(currentDate) {
   return questions[questionIndex]
 }
 
+app.use("/api/isAuthenticated", async (req, res) => {
+  // console.log(req.user)
+  // console.log("Session:", req.session)
+  if (req.isAuthenticated()) {
+    return res.status(200).send(req.user)
+  } else {
+    return res.status(404).send("utilisateur non connecter")
+  }
+})
 // ...
 
+app.use("/api/auth/google", auth) // mount the google auth routes
+app.use("/api/auth/facebook", fbAuth) // fb o auth
+app.use("/api/auth/localAuth", localAuth)
+app.use("/api/user", user)
+// app.use("/", (req, res) => res.send("hello haroun"))
+
+// question du jour ...etc
 app.get("/api/questiondujour", (req, res) => {
   try {
     const currentDate = new Date()
@@ -102,29 +98,13 @@ app.get("/api/questiondujour", (req, res) => {
   }
 })
 
-app.use("/api/auth/google", auth) // mount the google auth routes
-app.use("/api/auth/facebook", fbAuth) // fb o auth
-app.use("/api/auth/localAuth", localAuth)
-app.use("/api/user", user)
-app.use("/", (req, res) => res.send("hello haroun"))
-
-app.use("/api/isAuthenticated", async (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.status(200).send(req.user)
-  } else {
-    return res.status(404).send("utilisateur non connecter")
-  }
-})
-
-// question du jour ...etc
-
 // socket config
 const io = new Server(server, {
-  // cors: {
-  //   origin: "*",
-  //   // credentials: true,
-  //   // allowedHeaders: true,
-  // },
+  cors: {
+    origin: "*",
+    credentials: true,
+    allowedHeaders: true,
+  },
 })
 
 // socket io config

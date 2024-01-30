@@ -12,13 +12,14 @@ router.get("/currentUser", async (req, res) => {
 })
 
 router.put("/completeProfil", async (req, res) => {
-  const { adresse, numTel, age } = req.body
+  const { adresse, numTel, dateNaissance,lieuNaissance } = req.body
   const currUser = await userModel.findByIdAndUpdate(
     req.query._id,
     {
       adresse: adresse,
       numTel: numTel,
-      age: age,
+      dateNaissance,
+      lieuNaissance,
       hasCompletedProfile: true,
     },
     { new: true }
