@@ -20,13 +20,14 @@ const { Server } = require("socket.io")
 const cron = require("node-cron")
 const { initializeApp } = require("firebase-admin/app")
 var admin = require("firebase-admin")
+const { userModel } = require("./models/user")
 
 connectDb()
 // use cookie session to store the session in the browser
 
 // app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
-app.set("trust proxy", 1) // trust first proxy
+// app.set("trust proxy", 1) 
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
@@ -57,10 +58,19 @@ app.use(express.json({ limit: "15mb" })) // limit the size of the body of the re
 // Définissez la date de début manuellement
 const startDate = new Date("2024-01-11")
 
-function getDailyQuestion(currentDate) {
+ function getDailyQuestion(currentDate) {
   const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
   const dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24))
   const questionIndex = (dayDifference - 1) % questions.length
+
+  const simplifiedQuestion = {
+    question: questions[questionIndex].question,
+    propositions: questions[questionIndex].propositions.map((prop) => ({
+      text: prop.text,
+    })),
+  }
+
+  // return simplifiedQuestion
   return questions[questionIndex]
 }
 
@@ -73,7 +83,6 @@ app.use("/api/isAuthenticated", async (req, res) => {
     return res.status(404).send("utilisateur non connecter")
   }
 })
-// ...
 
 app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth
@@ -86,6 +95,7 @@ app.get("/api/questiondujour", (req, res) => {
   try {
     const currentDate = new Date()
     const dailyQuestion = getDailyQuestion(currentDate)
+
     res.status(200).json(dailyQuestion)
   } catch (error) {
     console.error(
@@ -193,14 +203,6 @@ io.on("connection", (socket) => {
   })
 })
 
-cron.schedule("32 22 * * *", () => {
-  // Réinitialiser les questions ici
-  io.emit("questionReset", {
-    q: "Question numéro 6 ",
-  })
-  console.log("mis a jour avec succeés")
-})
-
 const serviceAccount = require("./moussabaat-ramadan-firebase-adminsdk-c7l4b-d60ef5cfda.json")
 const { tokenModel } = require("./models/tokens")
 // initializeApp(firebaseConfig)
@@ -208,6 +210,33 @@ initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
 
+cron.schedule(
+  "30 22 * * 0",
+  async () => {
+    // Réinitialisez le score quotidien et les marqueurs pour tous les utilisateurs
+    await userModel.updateMany(
+      {},
+      {
+        $set: {
+          answeredToday: false,
+          answeredSecondary: false,
+        },
+      }
+    )
+
+    // Réinitialisez la question du jour, si nécessaire
+    io.emit("questionReset", {
+      q: "Nouvelle question du jour",
+    })
+
+    console.log("Réinitialisation hebdomadaire effectuée avec succès")
+  },
+  {
+    timezone: "Africa/Algiers", // Fuseau horaire pour l'Algérie
+  }
+)
+
 server.listen(port, () => {
   console.log(`Listening on port ${port}...`)
 })
+module.exports = { getDailyQuestion }
