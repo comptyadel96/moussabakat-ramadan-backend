@@ -92,6 +92,7 @@ const userSchema = new mongoose.Schema(
     deviceToken: {
       type: String,
     },
+    answeredQuestions: [String],
   },
 
   { timestamps: true }

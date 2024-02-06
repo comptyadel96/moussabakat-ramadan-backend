@@ -2,9 +2,8 @@ const { tokenModel } = require("../models/tokens")
 const { userModel } = require("../models/user")
 const router = require("express").Router()
 const questions = require("../utils/questions")
-// const { getDailyQuestion } = require("../index")
 
-const startDate = new Date("2024-01-11")
+const startDate = new Date("2024-01-21")
 
 function getDailyQuestion(currentDate) {
   const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
@@ -12,6 +11,7 @@ function getDailyQuestion(currentDate) {
   const questionIndex = (dayDifference - 1) % questions.length
 
   const simplifiedQuestion = {
+    id: questions[questionIndex].id,
     question: questions[questionIndex].question,
     propositions: questions[questionIndex].propositions.map((prop) => ({
       text: prop.text,
@@ -20,7 +20,24 @@ function getDailyQuestion(currentDate) {
   }
 
   return simplifiedQuestion
-  // return questions[questionIndex]
+}
+
+// avoir toutes les questions précédentes
+function getAllQuestionsUntilToday(currentDate) {
+  const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
+  const dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24))
+
+  const allQuestions = []
+
+  for (let i = 0; i < dayDifference; i++) {
+    const questionIndex = i % questions.length
+    allQuestions.push({
+      id: questions[questionIndex].id,
+      question: questions[questionIndex].question,
+    })
+  }
+
+  return allQuestions
 }
 
 router.get("/currentUser", async (req, res) => {
@@ -52,6 +69,56 @@ router.put("/completeProfil", async (req, res) => {
 })
 
 // répondre à la question du jour
+// router.post("/answerQuestion", async (req, res) => {
+//   const { userId, answer } = req.body
+
+//   // Récupérez l'utilisateur
+//   const user = await userModel.findOne({ userId: userId })
+
+//   // Vérifiez si l'utilisateur a déjà répondu aujourd'hui
+//   if (user.answeredToday) {
+//     return res.status(400).send("L'utilisateur a déjà répondu aujourd'hui.")
+//   }
+
+//   // Obtenez la question du jour
+//   const dailyQuestion = getDailyQuestion(new Date())
+//   const index = dailyQuestion.propositions.findIndex(
+//     (item) => item.text === answer
+//   )
+//   // console.log(dailyQuestion.propositions[index].isTrue)
+//   // console.log(index)
+
+//   // Vérifiez la réponse
+//   if (dailyQuestion.propositions[index].isTrue) {
+//     // Réponse correcte, mettez à jour les scores
+//     user.score += 1
+//     user.weeklyScore += 1
+//     user.answeredToday = true
+//     await user.save()
+//     return res.json({ success: true, message: "réponse correcte" })
+
+//     // Vérifiez si l'utilisateur a atteint le score hebdomadaire nécessaire
+//     // if (user.weeklyScore + user.dailyScore >= 7) {
+//     //   // Tirage au sort hebdomadaire
+//     //   // Mettez à jour les scores, réinitialisez les marqueurs, etc.
+//     //   // ...
+//     // }
+//   } else {
+//     // Réponse incorrecte, gérer les questions secondaires si nécessaire
+//     // ...
+//     user.weeklyScore += 0
+//     user.answeredToday = true
+//     await user.save()
+//     res.json({ success: false, message: "réponse incorrecte" })
+//   }
+
+//   // Sauvegardez les modifications de l'utilisateur
+//   await user.save()
+
+//   res.status(200).send("Réponse traitée avec succès")
+// })
+
+// répondre à la question du jour
 router.post("/answerQuestion", async (req, res) => {
   const { userId, answer } = req.body
 
@@ -68,38 +135,127 @@ router.post("/answerQuestion", async (req, res) => {
   const index = dailyQuestion.propositions.findIndex(
     (item) => item.text === answer
   )
-  console.log(dailyQuestion.propositions[index].isTrue)
-  // console.log(index)
+
+  // Ajoutez l'ID de la question à la liste des questions auxquelles l'utilisateur a répondu
+  user.answeredQuestions.push(dailyQuestion.id)
+
+  new Set(user.answeredQuestions)
 
   // Vérifiez la réponse
   if (dailyQuestion.propositions[index].isTrue) {
     // Réponse correcte, mettez à jour les scores
     user.score += 1
     user.weeklyScore += 1
+    user.dailyScore += 1
     user.answeredToday = true
     await user.save()
     return res.json({ success: true, message: "réponse correcte" })
-
-    // Vérifiez si l'utilisateur a atteint le score hebdomadaire nécessaire
-    // if (user.weeklyScore + user.dailyScore >= 7) {
-    //   // Tirage au sort hebdomadaire
-    //   // Mettez à jour les scores, réinitialisez les marqueurs, etc.
-    //   // ...
-    // }
   } else {
     // Réponse incorrecte, gérer les questions secondaires si nécessaire
     // ...
     user.weeklyScore += 0
     user.answeredToday = true
     await user.save()
-    res.json({ success: false, message: "réponse incorrecte" })
+    return res.json({ success: false, message: "réponse incorrecte" })
   }
 
   // Sauvegardez les modifications de l'utilisateur
-  await user.save()
+  // await user.save()
 
-  res.status(200).send("Réponse traitée avec succès")
+  // return res.status(200).send("Réponse traitée avec succès")
 })
+
+
+// Récupérer le statut des questions pour un utilisateur ( savoir les questions auxquelles il a répondu et les autres dont il n'a pas encore répondu)
+router.get("/questionsStatus", async (req, res) => {
+  try {
+    const { userId } = req.query
+
+    // Récupérez l'utilisateur
+    const user = await userModel.findOne({ userId })
+
+    if (!user) {
+      return res.status(404).send("Aucun utilisateur trouvé avec cet ID.")
+    }
+
+    // Obtenez toutes les questions jusqu'à aujourd'hui
+    const allQuestions = getAllQuestionsUntilToday(new Date())
+
+    // Créez un tableau avec le statut de chaque question
+    const userAnsweredQuestionIds = user.answeredQuestions.map(
+      (answer) => answer
+    )
+
+    const unansweredQuestions = allQuestions.filter(
+      (q) => !userAnsweredQuestionIds.includes(q.id.toString()) // Convertissez l'ID en chaîne pour la comparaison
+    )
+
+    res.status(200).json({ unansweredQuestions, allQuestions })
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération du statut des questions :",
+      error
+    )
+    res
+      .status(500)
+      .send("Erreur lors de la récupération du statut des questions")
+  }
+})
+
+// Répondre à une question spécifique (y compris les questions précédentes)
+router.post("/answerSpecificQuestion", async (req, res) => {
+  try {
+    const { userId, questionId, answer } = req.body;
+
+    // Récupérez l'utilisateur
+    const user = await userModel.findOne({ userId });
+
+    // Vérifiez si l'utilisateur a déjà répondu à cette question
+    if (user.answeredQuestions.includes(questionId)) {
+      return res.status(400).send("L'utilisateur a déjà répondu à cette question.");
+    }
+
+    // Obtenez la question spécifique
+    const selectedQuestion = questions.find((question) => question.id === questionId);
+
+    // Vérifiez si la question existe
+    if (!selectedQuestion) {
+      return res.status(404).send("Question non trouvée.");
+    }
+
+    // Vérifiez si la question est la question du jour
+    const currentDate = new Date();
+    const dayDifference = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+    const expectedQuestionId = (dayDifference - 1) % questions.length;
+    if (selectedQuestion.id !== expectedQuestionId) {
+      return res.status(400).send("Vous ne pouvez pas répondre à cette question pour le moment.");
+    }
+
+    // Vérifiez la réponse
+    const index = selectedQuestion.propositions.findIndex((item) => item.text === answer);
+    if (index === -1) {
+      return res.status(400).send("La réponse fournie n'est pas valide.");
+    }
+
+    const isAnswerCorrect = selectedQuestion.propositions[index].isTrue;
+
+    // Mettez à jour les scores et les réponses de l'utilisateur
+    user.score += isAnswerCorrect ? 1 : 0;
+    user.weeklyScore += isAnswerCorrect ? 1 : 0;
+    user.dailyScore += isAnswerCorrect ? 1 : 0;
+    user.answeredQuestions.push({ questionId, isAnswerCorrect });
+    await user.save();
+
+    return res.json({ success: isAnswerCorrect, message: isAnswerCorrect ? "Réponse correcte." : "Réponse incorrecte." });
+  } catch (error) {
+    console.error("Erreur lors de la réponse à une question spécifique :", error);
+    return res.status(500).send("Erreur lors de la réponse à une question spécifique.");
+  }
+});
+
+
+
+
 
 // add current phone token to send push notifs
 router.post("/addToken", async (req, res) => {

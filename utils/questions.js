@@ -7,7 +7,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 1,
+    id: 1,
   },
   {
     question: "Question numéro 2 ",
@@ -17,7 +17,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 2,
+    id: 2,
   },
   {
     question: "Question numéro 3 ",
@@ -27,7 +27,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 3,
+    id: 3,
   },
   {
     question: "Question numéro 4 ",
@@ -37,7 +37,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 4,
+    id: 4,
   },
   {
     question: "Question numéro 5 ",
@@ -47,7 +47,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 5,
+    id: 5,
   },
   {
     question: "Question numéro 6 ",
@@ -57,7 +57,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 6,
+    id: 6,
   },
   {
     question: "Question numéro 7 ",
@@ -67,7 +67,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 7,
+    id: 7,
   },
   {
     question: "Question numéro 8 ",
@@ -77,7 +77,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 8,
+    id: 8,
   },
   {
     question: "Question numéro 9 ",
@@ -87,7 +87,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 9,
+    id: 9,
   },
   {
     question: "Question numéro 10 ",
@@ -97,7 +97,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 10,
+    id: 10,
   },
   {
     question: "Question numéro 11 ",
@@ -107,7 +107,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 11,
+    id: 11,
   },
   {
     question: "Question numéro 12 ",
@@ -117,7 +117,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 12,
+    id: 12,
   },
   {
     question: "Question numéro 13 ",
@@ -127,7 +127,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 13,
+    id: 13,
   },
   {
     question: "Question numéro 14 ",
@@ -137,7 +137,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 14,
+    id: 14,
   },
   {
     question: "Question numéro 15 ",
@@ -147,7 +147,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 15,
+    id: 15,
   },
   {
     question: "Question numéro 16 ",
@@ -157,7 +157,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 16,
+    id: 16,
   },
   {
     question: "Question numéro 17 ",
@@ -167,7 +167,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 17,
+    id: 17,
   },
   {
     question: "Question numéro 18 ",
@@ -177,7 +177,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 18,
+    id: 18,
   },
   {
     question: "Question numéro 19 ",
@@ -187,7 +187,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 19,
+    id: 19,
   },
   {
     question: "Question numéro 20 ",
@@ -197,7 +197,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 20,
+    id: 20,
   },
   {
     question: "Question numéro 21 ",
@@ -207,7 +207,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 21,
+    id: 21,
   },
   {
     question: "Question numéro 22 ",
@@ -217,7 +217,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 22,
+    id: 22,
   },
   {
     question: "Question numéro 23 ",
@@ -227,7 +227,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 23,
+    id: 23,
   },
   {
     question: "Question numéro 24 ",
@@ -237,7 +237,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 24,
+    id: 24,
   },
   {
     question: "Question numéro 25 ",
@@ -247,7 +247,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 25,
+    id: 25,
   },
   {
     question: "Question numéro 26 ",
@@ -257,7 +257,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 26,
+    id: 26,
   },
   {
     question: "Question numéro 27 ",
@@ -267,7 +267,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 27,
+    id: 27,
   },
   {
     question: "Question numéro 28 ",
@@ -277,7 +277,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 28,
+    id: 28,
   },
   {
     question: "Question numéro 29 ",
@@ -287,7 +287,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 29,
+    id: 29,
   },
   {
     question: "Question numéro 30 ",
@@ -297,7 +297,7 @@ const questions = [
       { text: "suggestion 2" },
       { text: "suggestion 3" },
     ],
-    index: 30,
+    id: 30,
   },
 ]
 module.exports = questions

@@ -2,7 +2,7 @@ const express = require("express")
 const dotenv = require("dotenv").config("./env")
 const app = express()
 const port = process.env.PORT || 3000
-const cookieSession = require("cookie-session")
+// const cookieSession = require("cookie-session")
 const session = require("express-session")
 const passport = require("passport")
 const cors = require("cors")
@@ -21,13 +21,13 @@ const cron = require("node-cron")
 const { initializeApp } = require("firebase-admin/app")
 var admin = require("firebase-admin")
 const { userModel } = require("./models/user")
-
+const startDate = new Date("2024-01-20")
 connectDb()
 // use cookie session to store the session in the browser
 
 // app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
-// app.set("trust proxy", 1) 
+// app.set("trust proxy", 1)
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
@@ -55,25 +55,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "15mb" }))
 app.use(express.json({ limit: "15mb" })) // limit the size of the body of the request to 500kb
 
-// Définissez la date de début manuellement
-const startDate = new Date("2024-01-11")
-
- function getDailyQuestion(currentDate) {
-  const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
-  const dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24))
-  const questionIndex = (dayDifference - 1) % questions.length
-
-  const simplifiedQuestion = {
-    question: questions[questionIndex].question,
-    propositions: questions[questionIndex].propositions.map((prop) => ({
-      text: prop.text,
-    })),
-  }
-
-  // return simplifiedQuestion
-  return questions[questionIndex]
-}
-
 app.use("/api/isAuthenticated", async (req, res) => {
   // console.log(req.user)
   // console.log("Session:", req.session)
@@ -89,6 +70,23 @@ app.use("/api/auth/facebook", fbAuth) // fb o auth
 app.use("/api/auth/localAuth", localAuth)
 app.use("/api/user", user)
 // app.use("/", (req, res) => res.send("hello haroun"))
+
+function getDailyQuestion(currentDate) {
+  const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
+  const dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24))
+  const questionIndex = (dayDifference - 1) % questions.length
+
+  const simplifiedQuestion = {
+    id: questions[questionIndex].id,
+    question: questions[questionIndex].question,
+    propositions: questions[questionIndex].propositions.map((prop) => ({
+      text: prop.text,
+      isTrue: prop.isTrue, // Ajoutez cette ligne pour inclure la propriété isTrue
+    })),
+  }
+
+  return simplifiedQuestion
+}
 
 // question du jour ...etc
 app.get("/api/questiondujour", (req, res) => {
@@ -211,7 +209,7 @@ initializeApp({
 })
 
 cron.schedule(
-  "30 22 * * 0",
+  "55 23 * * *",
   async () => {
     // Réinitialisez le score quotidien et les marqueurs pour tous les utilisateurs
     await userModel.updateMany(
@@ -220,6 +218,7 @@ cron.schedule(
         $set: {
           answeredToday: false,
           answeredSecondary: false,
+          dailyScore: 0,
         },
       }
     )
@@ -235,8 +234,23 @@ cron.schedule(
     timezone: "Africa/Algiers", // Fuseau horaire pour l'Algérie
   }
 )
+// Tâche cron pour réinitialiser le score hebdomadaire chaque semaine le dimanche à 00h00
+cron.schedule("0 0 * * 0", async () => {
+  try {
+    // Réinitialisez le score hebdomadaire de tous les utilisateurs à zéro
+    await userModel.updateMany({}, { weeklyScore: 0 })
+
+    console.log(
+      "Score hebdomadaire réinitialisé chaque semaine le dimanche à 00h00."
+    )
+  } catch (error) {
+    console.error(
+      "Erreur lors de la réinitialisation du score hebdomadaire :",
+      error
+    )
+  }
+})
 
 server.listen(port, () => {
   console.log(`Listening on port ${port}...`)
 })
-module.exports = { getDailyQuestion }
