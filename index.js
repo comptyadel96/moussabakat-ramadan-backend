@@ -21,7 +21,7 @@ const cron = require("node-cron")
 const { initializeApp } = require("firebase-admin/app")
 var admin = require("firebase-admin")
 const { userModel } = require("./models/user")
-const startDate = new Date("2024-01-20")
+const startDate = new Date("2024-01-15")
 connectDb()
 // use cookie session to store the session in the browser
 
@@ -105,6 +105,7 @@ app.get("/api/questiondujour", (req, res) => {
       .send("Erreur lors de la récupération de la question du jour")
   }
 })
+
 
 // socket config
 const io = new Server(server, {

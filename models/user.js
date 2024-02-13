@@ -88,11 +88,12 @@ const userSchema = new mongoose.Schema(
     lastResetDate: Date,
     answeredToday: { type: Boolean, default: false },
 
-    answeredSecondary: Boolean,
+    // answeredSecondary: Boolean,
     deviceToken: {
       type: String,
     },
-    answeredQuestions: [String],
+    // answeredQuestions: [String],
+    answeredQuestions: [{ questionId: Number, isAnswerCorrect: Boolean }],
   },
 
   { timestamps: true }

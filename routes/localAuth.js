@@ -49,6 +49,46 @@ passport.use(
   )
 )
 
+// router.post("/register", async (req, res) => {
+//   try {
+//     const {
+//       nom,
+//       prenom,
+//       adresse,
+//       numTel,
+//       email,
+//       dateNaissance,
+//       lieuNaissance,
+//       hasCompletedProfile,
+//       authProvider,
+//       password,
+//       sexe,
+//     } = req.body
+//     bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
+//       if (err) {
+//         console.error("Erreur lors du hashage du mot de passe :", err)
+//         // return res.redirect("https://moussabakat-ramadan.com/Profil")
+//       }
+//       const newUser = await userModel.create({
+//         nom,
+//         prenom,
+//         adresse,
+//         numTel,
+//         email,
+//         dateNaissance,
+//         lieuNaissance,
+//         sexe,
+//         hasCompletedProfile,
+//         authProvider,
+//         password: hashedPassword,
+//       })
+//       res.status(200).send(newUser)
+//     })
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }) 
+
 router.post("/register", async (req, res) => {
   try {
     const {
@@ -82,12 +122,19 @@ router.post("/register", async (req, res) => {
         authProvider,
         password: hashedPassword,
       })
+
+      // Remplir userId avec _id lors de la création
+      newUser.userId = newUser._id.toString()
+      await newUser.save()
+
       res.status(200).send(newUser)
     })
   } catch (error) {
     console.log(error)
+    res.status(500).send("Erreur lors de la création de l'utilisateur")
   }
 })
+
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
