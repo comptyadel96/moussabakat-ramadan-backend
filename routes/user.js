@@ -2,7 +2,7 @@ const { tokenModel } = require("../models/tokens")
 const { userModel } = require("../models/user")
 const router = require("express").Router()
 const questions = require("../utils/questions")
-
+const RTLArabic = require("rtl-arabic")
 const startDate = new Date("2024-01-15")
 
 function getDailyQuestion(currentDate) {
@@ -329,6 +329,7 @@ router.get("/questionsStatus", async (req, res) => {
 //   }
 // })
 // Répondre à une question spécifique (y compris les questions précédentes)
+
 router.post("/answerSpecificQuestion", async (req, res) => {
   try {
     const { userId, questionId, answer } = req.body
@@ -356,7 +357,14 @@ router.post("/answerSpecificQuestion", async (req, res) => {
     if (!selectedQuestion) {
       return res.status(404).send("Question non trouvée.")
     }
+    const options = {
+      harakat: true,
+      numbers: false,
+      multiline: true,
+    }
 
+    let convertedText = new RTLArabic(answer, options).convert()
+    console.log(convertedText)
     // if (selectedQuestion.id > dailyQuestion.id) {
     //   return res
     //     .status(400)
@@ -365,7 +373,7 @@ router.post("/answerSpecificQuestion", async (req, res) => {
 
     // Vérifiez la réponse
     const index = dailyQuestion.propositions.findIndex(
-      (item) => item.text === answer
+      (item) => item.text.ar === answer || item.text.fr === answer
     )
     if (index === -1) {
       return res.status(400).send("La réponse fournie n'est pas valide.")

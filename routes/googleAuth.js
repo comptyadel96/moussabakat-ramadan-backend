@@ -23,8 +23,8 @@ passport.use(
       clientID: process.env.GOOGLE_ID_CLIENT,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL:
-        "https://moussabakat-ramadan-2-0.onrender.com/api/auth/google/callback",
-        // "http://localhost:3000/api/auth/google/callback",
+        // "https://moussabakat-ramadan-2-0.onrender.com/api/auth/google/callback",
+        "http://localhost:3000/api/auth/google/callback",
 
       scope: ["email", "profile"],
     },
@@ -61,8 +61,8 @@ router.get(
   "/callback",
   passport.authenticate("google", {
     successRedirect: 
-    // "http://localhost:5173/Profil",
-    "https://moussabakat-ramadan.com/Profil",
+    "http://localhost:5173/Profil",
+    // "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     res.send(req.user)
@@ -81,8 +81,8 @@ router.get("/login/success", (req, res) => {
 router.get("/logout", async (req, res) => {
   req.logout()
   req.session = null
-  // res.redirect("http://localhost:5173/Login")
-  res.redirect("https://moussabakat-ramadan.com/Login")
+  res.redirect("http://localhost:5173/Login")
+  // res.redirect("https://moussabakat-ramadan.com/Login")
   // res.send("logout with success")
 })
 

@@ -28,6 +28,10 @@ connectDb()
 // app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
 // app.set("trust proxy", 1)
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ extended: true }))
+
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
