@@ -42,9 +42,7 @@ function getAllQuestionsUntilToday(currentDate) {
         (props) => ({
           id: props.id,
           question: props.question,
-          propositions: props.propositions.map((prop) => ({
-           text: prop.text
-          })),
+          propositions: props.propositions,
         })
       ),
     })
@@ -397,9 +395,26 @@ router.post("/answerSpecificQuestion", async (req, res) => {
   }
 })
 
-router.post("/timedOut", async (req, res) => {
+// ajouter un point et marquer la réponse principale comme juste si il répond juste à 3 questions secondaires
+router.post("/addPoint", async (req, res) => {
   const { questionId, userId } = req.body
   const user = await userModel.findOne({ userId })
+  if (!user) {
+    return res.status(404).send("aucun utilisateur retrouver")
+  }
+  const currentQuestion = user.answeredQuestions.find(
+    (question) => question.questionId == questionId
+  )
+  if (!currentQuestion) {
+    return res
+      .status(404)
+      .send("aucun question retrouver avec cet identificateur" + questionId)
+  }
+  currentQuestion.isAnswerCorrect = true
+  user.score += 1
+  user.weeklyScore += 1
+  await user.save()
+  res.status(200).send("point récuperer avec succées")
 })
 
 // add current phone token to send push notifs
