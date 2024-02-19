@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
       maxLength: [10, "le numéro ne peut pas dépasser 10 chiffres"],
       //   required: true,
       minLength: [10, "le nom doit avoir plus de 10 chiffres"],
-      unique: [true, "ce numéro de telephone a déja été utiliser"],
+      // unique: [true, "ce numéro de telephone a déja été utiliser"],
     },
     dateNaissance: {
       type: String,
