@@ -83,8 +83,8 @@ router.post("/register", async (req, res) => {
       })
 
       // Remplir userId avec _id lors de la création
-      newUser.userId = newUser._id.toString()
-      await newUser.save()
+      // newUser.userId = newUser._id.toString()
+      // await newUser.save()
       req.logIn(newUser, (err) => {
         if (err) {
           throw err
