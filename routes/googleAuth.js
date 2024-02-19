@@ -24,7 +24,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL:
         "https://moussabakat-ramadan-2-0.onrender.com/api/auth/google/callback",
-        // "http://localhost:3000/api/auth/google/callback",
+      // "http://localhost:3000/api/auth/google/callback",
 
       scope: ["email", "profile"],
     },
@@ -60,9 +60,8 @@ router.get(
 router.get(
   "/callback",
   passport.authenticate("google", {
-    successRedirect: 
+    successRedirect: "https://moussabakat-ramadan.com/Profil",
     // "http://localhost:5173/Profil",
-    "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     res.send(req.user)

@@ -14,8 +14,8 @@ const { connectDb } = require("./utils/db")
 const bodyParser = require("body-parser")
 const checkCookies = require("./middlewares/checkCookies")
 const questions = require("./utils/questions")
-const https = require("https")
-const server = https.createServer(app)
+const http = require("http")
+const server = http.createServer(app)
 const { Server } = require("socket.io")
 const cron = require("node-cron")
 const { initializeApp } = require("firebase-admin/app")
@@ -29,18 +29,19 @@ app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
 // app.set("trust proxy", 1)
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json({ extended: true }))
+// app.use(express.urlencoded({ extended: true }))
+// app.use(express.json({ extended: true }))
 
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
     // resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "none",
+      httpOnly: false,
     },
   })
 )
@@ -52,8 +53,8 @@ app.use(passport.session()) // use the cookie to store the session
 app.use(
   cors({
     // origin: "https://moussabakat-ramadan.com",
-    // origin: "https://moussabakat-ramadan.com",
-    origin: "*",
+    origin: "https://moussabakat-ramadan.com",
+    // origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
