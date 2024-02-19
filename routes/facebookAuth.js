@@ -82,8 +82,8 @@ router.get("/login/success", (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout()
   req.session = null
-  // res.redirect("https://moussabakat-ramadan.com/Login")
-  res.redirect("http://localhost:5173/Login")
+  res.redirect("https://moussabakat-ramadan.com/Login")
+  // res.redirect("http://localhost:5173/Login")
 })
 
 module.exports = router
