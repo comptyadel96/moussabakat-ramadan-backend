@@ -32,14 +32,14 @@ app.set("trust proxy", 1)
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     proxy: true,
     cookie: {
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "none",
-      httpOnly: false,
+      httpOnly: true,
     },
   })
 )
