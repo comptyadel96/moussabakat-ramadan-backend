@@ -27,10 +27,10 @@ connectDb()
 // use cookie session to store the session in the browser
 app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
-app.set("trust proxy", 1)
+// app.set("trust proxy", 1)
 
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.json({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ extended: true }))
 
 app.use(
   session({
@@ -38,7 +38,7 @@ app.use(
     // resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: false,
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "none",
     },
@@ -52,7 +52,7 @@ app.use(passport.session()) // use the cookie to store the session
 app.use(
   cors({
     // origin: "https://moussabakat-ramadan.com",
-    origin: ["http://localhost:5173", "https://moussabakat-ramadan.com"],
+    origin: "https://moussabakat-ramadan.com",
     // origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
