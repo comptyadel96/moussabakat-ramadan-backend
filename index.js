@@ -23,21 +23,25 @@ var admin = require("firebase-admin")
 const { userModel } = require("./models/user")
 const startDate = new Date("2024-01-15")
 connectDb()
+
 // use cookie session to store the session in the browser
+app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
-// app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
+app.set("trust proxy", 1)
 
-// app.set("trust proxy", 1)
-
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json({ extended: true }))
+// app.use(express.urlencoded({ extended: true }))
+// app.use(express.json({ extended: true }))
 
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
-    resave: false,
+    // resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 30 * 24 * 60 * 60 * 1000 },
+    cookie: {
+      secure: false,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+    },
   })
 )
 
@@ -109,7 +113,6 @@ app.get("/api/questiondujour", (req, res) => {
       .send("Erreur lors de la récupération de la question du jour")
   }
 })
-
 
 // socket config
 const io = new Server(server, {
