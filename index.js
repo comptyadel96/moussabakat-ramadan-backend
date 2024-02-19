@@ -51,7 +51,10 @@ app.use(passport.session()) // use the cookie to store the session
 app.use(
   cors({
     // origin: "https://moussabakat-ramadan.com",
-    origin: "https://moussabakat-ramadan.com",
+    origin: [
+      "https://moussabakat-ramadan.com",
+      "https://moussabakat-ramadan-2-0.onrender.com",
+    ],
     // origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -68,7 +71,7 @@ app.use("/api/isAuthenticated", async (req, res) => {
   if (req.isAuthenticated()) {
     return res.status(200).send(req.user)
   } else {
-    return res.status(404).send("utilisateur non connecter")
+    return res.status(400).send("utilisateur non connecter")
   }
 })
 
