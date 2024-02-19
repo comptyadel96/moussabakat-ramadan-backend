@@ -52,8 +52,8 @@ app.use(passport.session()) // use the cookie to store the session
 app.use(
   cors({
     // origin: "https://moussabakat-ramadan.com",
-    origin: "https://moussabakat-ramadan.com",
-    // origin: "*",
+    // origin: "https://moussabakat-ramadan.com",
+    origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
