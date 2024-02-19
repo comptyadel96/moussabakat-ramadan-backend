@@ -58,6 +58,7 @@ app.use(
     origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: true,
   })
 )
 // middleware to parse the body of the request to json format and store it in req.body object
