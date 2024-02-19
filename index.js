@@ -32,14 +32,14 @@ app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
-    resave: false,
+    // resave: false,
     saveUninitialized: false,
     // proxy: true,
     cookie: {
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "none",
-      httpOnly: true,
+      // httpOnly: true,
     },
   })
 )
