@@ -25,23 +25,21 @@ const startDate = new Date("2024-01-15")
 connectDb()
 
 // use cookie session to store the session in the browser
-app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
+// app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 
-// app.set("trust proxy", 1)
-
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.json({ extended: true }))
+app.set("trust proxy", 1)
 
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
-    // resave: false,
+    resave: true,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "none",
-      httpOnly: false,
+      httpOnly: true,
     },
   })
 )
