@@ -1,3 +1,4 @@
+require("newrelic")
 const express = require("express")
 const dotenv = require("dotenv").config("./env")
 const app = express()
@@ -21,7 +22,9 @@ const cron = require("node-cron")
 const { initializeApp } = require("firebase-admin/app")
 var admin = require("firebase-admin")
 const { userModel } = require("./models/user")
-const startDate = new Date("2024-01-15")
+const startDate = new Date("2024-01-25")
+const { rateLimit } = require("express-rate-limit")
+
 connectDb()
 
 // use cookie session to store the session in the browser
@@ -32,13 +35,13 @@ app.set("trust proxy", "loopback,3.75.158.163,3.125.183.140,35.157.117.28")
 app.use(
   session({
     secret: process.env.COOKIE_KEY,
-    // resave: false,
+    resave: false,
     saveUninitialized: false,
     // proxy: true,
     cookie: {
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
+      // sameSite: "none",
       httpOnly: true,
     },
   })
@@ -54,6 +57,7 @@ app.use(
     origin: [
       "https://moussabakat-ramadan.com",
       "https://moussabakat-ramadan-2-0.onrender.com/api/auth/localAuth/register",
+      "http://localhost:5173",
     ],
     // origin: "*",
     credentials: true,
@@ -75,6 +79,17 @@ app.use("/api/isAuthenticated", async (req, res) => {
     return res.status(400).send("utilisateur non connecter")
   }
 })
+
+// limiter le nombre de requétes par utilisateur
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 110, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+})
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
 
 app.use("/api/auth/google", auth) // mount the google auth routes
 app.use("/api/auth/facebook", fbAuth) // fb o auth

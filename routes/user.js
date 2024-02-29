@@ -4,6 +4,7 @@ const router = require("express").Router()
 const questions = require("../utils/questions")
 const RTLArabic = require("rtl-arabic")
 const startDate = new Date("2024-01-15")
+const isAuthenticated = require("../middlewares/auth")
 
 function getDailyQuestion(currentDate) {
   const timeDiff = Math.abs(currentDate.getTime() - startDate.getTime())
@@ -61,7 +62,8 @@ router.get("/currentUser", async (req, res) => {
 })
 
 router.put("/completeProfil", async (req, res) => {
-  const { adresse, numTel, dateNaissance, lieuNaissance } = req.body
+  const { adresse, numTel, dateNaissance, lieuNaissance, nom, prenom } =
+    req.body
   const currUser = await userModel.findByIdAndUpdate(
     req.query._id,
     {
@@ -69,9 +71,33 @@ router.put("/completeProfil", async (req, res) => {
       numTel: numTel,
       dateNaissance,
       lieuNaissance,
+      nom,
+      prenom,
       hasCompletedProfile: true,
     },
-    { new: true }
+    { new: true, runValidators: true }
+  )
+  if (!currUser) {
+    return res.status(404).send("aucun utilisateur trouver avec cet id")
+  }
+  return res.status(200).send(currUser)
+  
+})
+router.put("/updateProfil", async (req, res) => {
+  const { adresse, numTel, dateNaissance, lieuNaissance, nom, prenom } =
+    req.body
+  const currUser = await userModel.findByIdAndUpdate(
+    req.query._id,
+    {
+      adresse: adresse,
+      numTel: numTel,
+      dateNaissance,
+      lieuNaissance,
+      nom,
+      prenom,
+      hasCompletedProfile: true,
+    },
+    { new: true, runValidators: true }
   )
   if (!currUser) {
     return res.status(404).send("aucun utilisateur trouver avec cet id")
@@ -128,7 +154,7 @@ router.put("/completeProfil", async (req, res) => {
 
 //   res.status(200).send("Réponse traitée avec succès")
 // })
-router.post("/answerQuestion", async (req, res) => {
+router.post("/answerQuestion", isAuthenticated, async (req, res) => {
   try {
     const { userId, answer } = req.body
 
@@ -225,7 +251,7 @@ router.post("/answerQuestion", async (req, res) => {
 // })
 
 // Récupérer le statut des questions pour un utilisateur ( savoir les questions auxquelles il a répondu et les autres dont il n'a pas encore répondu)
-router.get("/questionsStatus", async (req, res) => {
+router.get("/questionsStatus", isAuthenticated, async (req, res) => {
   try {
     const { userId } = req.query
 
@@ -330,7 +356,7 @@ router.get("/questionsStatus", async (req, res) => {
 // })
 // Répondre à une question spécifique (y compris les questions précédentes)
 
-router.post("/answerSpecificQuestion", async (req, res) => {
+router.post("/answerSpecificQuestion", isAuthenticated, async (req, res) => {
   try {
     const { userId, questionId, answer } = req.body
 
@@ -404,25 +430,47 @@ router.post("/answerSpecificQuestion", async (req, res) => {
 })
 
 // ajouter un point et marquer la réponse principale comme juste si il répond juste à 3 questions secondaires
-router.post("/addPoint", async (req, res) => {
+router.post("/addPoint", isAuthenticated, async (req, res) => {
+  try {
+    const { questionId, userId } = req.body
+    const user = await userModel.findOne({ userId })
+    if (!user) {
+      return res.status(404).send("aucun utilisateur retrouver")
+    }
+    const currentQuestion = user.answeredQuestions.find(
+      (question) => question.questionId == questionId
+    )
+    if (!currentQuestion) {
+      return res
+        .status(404)
+        .send("aucun question retrouver avec cet identificateur" + questionId)
+    }
+    currentQuestion.isAnswerCorrect = true
+    user.score += 1
+    user.weeklyScore += 1
+    await user.save()
+    res.status(200).send("point récuperer avec succées")
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// si le temps s'ecroule on compte la réponse de l'utilisateur comme fausse
+router.post("/timeOut", async (req, res) => {
   const { questionId, userId } = req.body
   const user = await userModel.findOne({ userId })
   if (!user) {
     return res.status(404).send("aucun utilisateur retrouver")
   }
-  const currentQuestion = user.answeredQuestions.find(
-    (question) => question.questionId == questionId
+  const currentQuestion = questions.find(
+    (question) => question.id == questionId
   )
-  if (!currentQuestion) {
-    return res
-      .status(404)
-      .send("aucun question retrouver avec cet identificateur" + questionId)
-  }
-  currentQuestion.isAnswerCorrect = true
-  user.score += 1
-  user.weeklyScore += 1
+  user.answeredQuestions.push({
+    questionId: currentQuestion.id,
+    isAnswerCorrect: false,
+  })
   await user.save()
-  res.status(200).send("point récuperer avec succées")
+  res.status(200).send("score mise à jour avec succées")
 })
 
 // add current phone token to send push notifs

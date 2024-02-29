@@ -60,8 +60,9 @@ router.get(
 router.get(
   "/callback",
   passport.authenticate("google", {
-    successRedirect: "https://moussabakat-ramadan.com/Profil",
-    // "http://localhost:5173/Profil",
+    successRedirect:
+      // "http://localhost:5173/Profil",
+    "https://moussabakat-ramadan.com/Profil",
   }),
   (req, res) => {
     res.send(req.user)
@@ -77,10 +78,11 @@ router.get("/login/success", (req, res) => {
 })
 
 // logout user from google strategy
-router.get("/logout", async (req, res) => {
+router.get("/logout", async (req, res, next) => {
   req.logout()
-  req.session = null
+
   // res.redirect("http://localhost:5173/Login")
+
   res.redirect("https://moussabakat-ramadan.com/Login")
   // res.send("logout with success")
 })
